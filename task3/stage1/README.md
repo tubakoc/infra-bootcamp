@@ -99,7 +99,7 @@ Controller üzerinden client olan postgre vm e postgresql kurulumu ``` installat
     - geerlingguy.postgresql
 ```
 
-### CREATE DATABASE 
+## CREATE DATABASE 
 Conroller üzerinden client olan postgre vm de Postgre de database oluşturma ``` db-server-playbook.yml``` ile yapıldı. Database oluşturulan host client olarak seçildi. Oluşturulan database de user ``` db_user: postgre ``` olarak seçildi. Database ismi de ``` db_name: trafikveri ``` olarak seçildi. Database oluşturulmadan önce PostgreSql hizmeti çalıştırıldı. Databaser user oluşturuldu. Oluştrulan kullanıcıya database erişim izinleri verildi.  ``` db-server-playbook.yml```   ``` db_name: trafikveri ```  database oluşturuldu.
  
  ![01](https://user-images.githubusercontent.com/28953086/120711268-d968eb80-c4c7-11eb-8afb-168255079ec5.png)
@@ -113,23 +113,25 @@ Conroller üzerinden client olan postgre vm de Postgre de database oluşturma ``
 ![03](https://user-images.githubusercontent.com/28953086/120712240-12559000-c4c9-11eb-88ae-ea3961302459.png)
 
 
-### ADD DATA TO TABLE
+## ADD DATA TO TABLE
+
+NACİVAT FOR POSTGRE de import wizard ile indirilen csv veri table ye aktarıldı ve table ismi verildi. Table ismi data verildi.
+
+![04](https://user-images.githubusercontent.com/28953086/120712724-ae7f9700-c4c9-11eb-8178-3b5477e5b2c3.png)
+
+Trafikveri database e eklenen data table Postgre vm de görüntülümek için önce postgre e ``` sudo -u postgres psql ``` ile geçiş yapıldı. ``` psql \c trafikveri ``` komutu ile data isimli table görüntülendi.  
+
+
+![04](https://user-images.githubusercontent.com/28953086/120713115-277eee80-c4ca-11eb-9f11-067c228d284f.png)
+
+
+Table ye eklenen veriler ``` SELECT * FROM data LIMIT 30; ``` ilk 30 veri  görüntülendi.
+
+
+![04](https://user-images.githubusercontent.com/28953086/120713777-0a96eb00-c4cb-11eb-9c92-e24ce65e0b4e.png)
 
 
 
-
-
-## EXAMPLE PLAYBOOK
-
-```
-- hosts: postgre
-  become: yes
-  vars_files:
-    - defaults/main.yml
-  roles:
-    - geerlingguy.postgresql
-    
-```
 
  
  
