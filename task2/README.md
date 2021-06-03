@@ -20,6 +20,32 @@ control ansible_host=192.168.1.10
  
  Firewalld, SELinux disable edildi. Clientlere reboot atıldı.  ``` security.yml ```
  
+ ``` 
+ ---
+- hosts: slave
+  become: yes
+  tasks:
+    - name: Disable SELinux
+      selinux:  
+        state: disabled
+        
+    - name: Disable Firewalld 
+      systemd:
+        name: firewalld
+        state: stopped
+        enabled: false
+       
+    - name: Tuned Disable and Stop
+      systemd:
+        name: tuned
+        state: stopped
+        enabled: false
+
+
+    - name: Rebooting
+      reboot:
+ 
+ ``` 
  Client lere telnet, net-tools ve lvm2 yüklendi.  ```  prepare.yml ```
  
   ```
@@ -51,9 +77,14 @@ control ansible_host=192.168.1.10
  ``` ansible-galaxy install easkay.minio   ```   komutu ile easkay.minio reposundan roleler çekildi.  ```  minio_installation.yml  ```  ile clientlere minio-server kurulumu yapıldı. 
  
  C1
+ 
+ 
   ![03](https://user-images.githubusercontent.com/28953086/120717560-6dd74c00-c4d0-11eb-9a96-7bc274bd8ab8.png)
   
+  
  C2
+ 
+ 
   ![04](https://user-images.githubusercontent.com/28953086/120718593-31a4eb00-c4d2-11eb-92cc-912b8d04c3cd.png)
  
  
