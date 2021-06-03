@@ -88,6 +88,37 @@ postgresql_hba_entries:
 * auth_options 
 
 
+## İNSTALL POSTGRE
+Controller üzerinden client olan postgre vm e postgresql kurulumu ``` installation_postgre.yml``` ile yapıldı.
+```
+- hosts: postgre
+  become: yes
+  vars_files:
+    - defaults/main.yml
+  roles:
+    - geerlingguy.postgresql
+```
+
+### CREATE DATABASE 
+Conroller üzerinden client olan postgre vm de Postgre de database oluşturma ``` db-server-playbook.yml``` ile yapıldı. Database oluşturulan host client olarak seçildi. Oluşturulan database de user ``` db_user: postgre ``` olarak seçildi. Database ismi de ``` db_name: trafikveri ``` olarak seçildi. Database oluşturulmadan önce PostgreSql hizmeti çalıştırıldı. Databaser user oluşturuldu. Oluştrulan kullanıcıya database erişim izinleri verildi.  ``` db-server-playbook.yml```   ``` db_name: trafikveri ```  database oluşturuldu.
+ 
+ ![01](https://user-images.githubusercontent.com/28953086/120711268-d968eb80-c4c7-11eb-8afb-168255079ec5.png)
+ 
+ ### CREATE TABLE
+ Table oluşturma işlemi NACİVAT FOR POSTGRE uygulaması ile client olan postgre vm e bağlanıp oluşturuldu.
+ 
+![02](https://user-images.githubusercontent.com/28953086/120711986-bc80e800-c4c8-11eb-95c3-56e26fccc091.png)
+
+
+![03](https://user-images.githubusercontent.com/28953086/120712240-12559000-c4c9-11eb-88ae-ea3961302459.png)
+
+
+### ADD DATA TO TABLE
+
+
+
+
+
 ## EXAMPLE PLAYBOOK
 
 ```
@@ -100,8 +131,6 @@ postgresql_hba_entries:
     
 ```
 
-
- 
  
  
 
