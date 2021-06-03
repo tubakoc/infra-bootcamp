@@ -1,0 +1,27 @@
+---
+- hosts: postgre
+  gather_facts: yes
+  tasks:
+    - name: Disable selinux
+      selinux:
+        state: disabled
+
+    - name: Who need a firewall?!?
+      systemd:
+        name: firewalld
+        state: stopped
+        enabled: false
+
+    - name: Rebooting...
+      reboot:
+
+    - name: I am back!!!
+      ping:
+
+
+    - name: Disable & Stop Dynamic System Tuning Daemon (tuned)
+      systemd:
+        name: tuned
+        state: stopped
+        enabled: false
+
