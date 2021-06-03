@@ -1,0 +1,9 @@
+---
+- hosts: slave
+  become: yes
+
+  tasks:
+ 
+    - name: Install some basic packages
+      yum:  
+        name: ['telnet', 'net-tools', 'lvm2']

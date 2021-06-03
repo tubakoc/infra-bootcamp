@@ -1,0 +1,6 @@
+[slave]
+c1 ansible_host=192.168.1.11
+c2 ansible_host=192.168.1.12
+
+[master]
+control ansible_host=192.168.1.10

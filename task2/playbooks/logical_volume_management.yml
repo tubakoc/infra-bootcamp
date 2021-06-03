@@ -1,0 +1,94 @@
+---
+- hosts: slave
+  become: yes
+
+  tasks:
+    
+    - name: Grab pvs
+      shell: lsscsi |grep "VBOX HARDDISK"|grep -v "2:0:0:0"|awk '{print $7}'
+      register: scsi_info
+    
+    
+    - name: Create a partition 
+      parted:
+        device: "{{ item }}"
+        label: gpt
+        number: 1
+        state: present
+      with_items: "{{scsi_info.stdout_lines}}"
+      register: pvs_info
+
+
+    - name: Create a new  volume group
+      lvg:
+        vg: vg_objectdisk
+        pvs: /dev/sdb1
+        state: present
+     
+    - name: Create lots of logical volumes
+      lvol:
+        vg: vg_objectdisk
+        lv: " {{ item.name }}"
+        size: "{{ item.size }}" 
+      with_items:
+        - name: lv_data1
+          size: 540
+        - name: lv_data2
+          size: 540
+        - name: lv_data3
+          size: 540
+        - name: lv_data4
+          size: 540
+        - name: lv_data5
+          size: 540
+        - name: lv_data6
+          size: 540
+        - name: lv_data7
+          size: 540
+        - name: lv_data8
+          size: 540
+
+    - name: Create xfs file systems
+      filesystem:
+        fstype: xfs
+        dev: "/dev/mapper/vg_objectdisk-{{ item }}"
+      with_items:
+        - lv_data1
+        - lv_data2
+        - lv_data3
+        - lv_data4
+        - lv_data5
+        - lv_data6 
+        - lv_data7
+        - lv_data8
+      
+    - name: Mount file system
+      mount:
+        fstype: xfs
+        path: "/mnt/disks/{{ item.dst_path }}"
+        src: "/dev/mapper/vg_objectdisk-{{ item.src_path }}"
+        opts: noatime
+        state: mounted
+      with_items:
+        - dst_path: source1 
+          src_path: lv_data1
+        - dst_path: source2
+          src_path: lv_data2
+        - dst_path: source3
+          src_path: lv_data3
+        - dst_path: source4
+          src_path: lv_data4
+        - dst_path: source5
+          src_path: lv_data5
+        - dst_path: source6
+          src_path: lv_data6
+        - dst_path: source7
+          src_path: lv_data7
+        - dst_path: source8
+          src_path: lv_data8
+ 
+          
+    - name: Rebooting...
+      reboot:
+
+    - shell: df -h---
